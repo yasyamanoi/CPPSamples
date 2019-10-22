@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R移植）編</h1>
+<h1 class="pagetitle">０００１．hello, world</h1>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+using namespace std;
+
+int main()
+{
+    cout &lt;&lt; "hello, world\n";
+}
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　プログラム解説書の最初には、多くのケースで「文字列を出力」が示されます。<br />
+　そして多くのケースで「hello, world（あるいは、Hello Worldなど）」が例題になっています。<br />
+　この文を最初に書いたのは「K&R」とされ、多くの他の書籍が「K&R」に敬意の意味を込め使用しています。<br />
+　ちなみに「C++D4」（プログラミング言語C++第4版の略、以降のドキュメントで使用します）では「Hello, World!」となっています。<br />
+　まずソースでは
+<div class="box1">
+<pre>
+#include &lt;iostream>
+</pre>
+</div>
+　と、標準ライブラリ（STL）の「iostream」コンテナを使用します。また
+<div class="box1">
+<pre>
+using namespace std;
+</pre>
+</div>
+　により
+<div class="box1">
+<pre>
+    std::cout &lt;&lt; "hello, world\n";
+</pre>
+</div>
+　と記述しなくても済むようになっています。
+<h4>K&Rでの記述</h4>
+　<b>第1章:やさしい入門</b>に記述されています、一番最初のプログラムです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_00.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_02.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
