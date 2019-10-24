@@ -14,7 +14,7 @@
 <!-- コンテンツ　-->
 <div id="contents">
 <h1>【第1部】C言語（K＆R移植）編</h1>
-<h1 class="pagetitle">０００６．数字、空白文字、その他をカウント</h1>
+<h1 class="pagetitle">０００７．累乗（るいじょう）関数をテストする</h1>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
@@ -23,29 +23,26 @@
 using namespace std;
 
 /*
-数字、空白文字、その他をカウント
+base を n乗 する。ただし n >= 0
+*/
+int power(int base, int n) {
+    int p;
+    for (p = 1; n > 0; --n) {
+        p = p * base;
+    }
+    return p;
+}
+
+/*
+累乗（るいじょう）関数をテストする
 */
 int main()
 {
-    int nwhite{};
-    int nother{};
-    int ndigit[10] {};
-    char c;
-    while ((c = cin.get()) != EOF) {
-        if (c >= '0' && c &lt;= '9') {
-            ++ndigit[c - '0'];
-        }
-        else if (c == ' ' || c == '\n' || c == '\t') {
-            ++nwhite;
-        }
-        else {
-            ++nother;
-        }
+    for (int i = 0; i &lt; 10; ++i) {
+        cout &lt;&lt; i &lt;&lt; '\t';
+        cout &lt;&lt; power(2, i) &lt;&lt; '\t';
+        cout &lt;&lt; power(-3, i) &lt;&lt; endl;
     }
-    for (auto v: ndigit) {
-        cout &lt;&lt; v &lt;&lt; ", ";
-    }
-    cout &lt;&lt; "空白: " &lt;&lt; nwhite &lt;&lt; ", それ以外: " &lt;&lt; nother &lt;&lt; endl;
     return 0;
 }
 </pre>
@@ -53,45 +50,25 @@ int main()
 <div class="box1_title">出力</div>
 <div class="box1">
 <pre>
-2018-02-15 12:34:56
-ABCDEFG abcdefg
-1961-03-17 00:00:00
-hello world
-^Z
-9, 6, 3, 2, 1, 2, 2, 1, 1, 1, 空白: 8, それ以外: 32
+0       1       1
+1       2       -3
+2       4       9
+3       8       -27
+4       16      81
+5       32      -243
+6       64      729
+7       128     -2187
+8       256     6561
+9       512     -19683
 </pre>
 </div>
 <h4>サンプル説明</h4>
-　このサンプルは、<b>C++11</b>の新しい機能が結構盛り込まれています。<br />
-　まず<b>初期化</b>ですが、
-<div class="box1">
-<pre>
-    int nwhite{};
-    int nother{};
-    int ndigit[10] {};
-</pre>
-</div>
-　で<b>nwhite、nother</b>そして<b>ndigit配列</b>がすべて<b> 0 </b>に初期化されます。<br />
-　また、<b>拡張for文</b>も使用されています。
-<div class="box1">
-<pre>
-    for (auto v: ndigit) {
-        cout &lt;&lt; v &lt;&lt; ", ";
-    }
-</pre>
-</div>
-　また、<b>C++11</b>とは関係ありませんが
-<div class="box1">
-<pre>
-        if (c >= '0' && c &lt;= '9') {
-            ++ndigit[c - '0'];
-        }
-</pre>
-</div>
-　は<b>ASCIIコード</b>が<b> '0' から '9' まで</b>順番に並んでいるから、記述できる手法です。
+　<b>K&R</b>には<b>べき乗</b>を計算する関数が複数紹介されてますが、今回はその<b>forループ</b>を使った関数を元にしています。<br />　<b>C/C++言語</b>の関数呼び出しは<b>値呼び出し</b>です。<br />
+　つまり呼び出し元が呼び出す関数に引数を渡すにあたって、呼び出される側は<b>引数のコピー</b>を作り出して、操作（処理）をします。そのため<b>呼び出し側</b>の変数は、呼び出した後もその内容が変わりません。<br />
+　このことを使って<b>再帰処理</b>を行うことができます。<br />
+　しかし、明示的に<b>ポインタもしくは参照</b>を渡すと、呼び出された側が、その内容を変更することが可能となります。
 <h4>K&Rでの記述</h4>
-　元になったのは<b>第1章:やさしい入門</b>に記述されています。<b>配列</b>の説明のところです。
-
+　元になったのは<b>第1章:やさしい入門</b>に記述されています。<b>引数－値による呼び出し</b>の説明のところです。
 </div>
 <!-- /コンテンツ　-->
 <hr>
