@@ -104,12 +104,31 @@ MyNameisTaro
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
+#include &lt;iostream>
+#include &lt;string>
+using namespace std;
+
+/*
+空白を除去する
+*/
+int main()
+{
+    string str;
+    while (getline(cin, str)) {
+        size_t c;
+        while ((c = str.find_first_of(" ")) != string::npos) {
+            str.erase(c, 1);
+        }
+        cout &lt;&lt; str &lt;&lt; endl;
+    }
+    return 0;
+}
 </pre>
 </div>
 
 
 <h4>K&Rでの記述</h4>
-　元になったのは<b>第2章:データ型・演算子・式</b>に記述されています。<b>型変換</b>の説明のところです。
+　元になったのは<b>第2章:データ型・演算子・式</b>に記述されています。<b>インクリメントとデクリメント演算子</b>の説明のところです。
 </div>
 <!-- /コンテンツ　-->
 <hr>
