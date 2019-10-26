@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R移植）編</h1>
+<h1 class="pagetitle">００１６．配列内検索</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+v[0] &lt;= v[n - 1]の中のxを探す
+*/
+int binsearch(int x, int v[], int n) {
+    int low{0}, high{ n - 1 }, mid{0};
+    while (low &lt;= high) {
+        mid = (low + high) / 2;
+        if (x &lt; v[mid]) {
+            high = mid - 1;
+        }
+        else if (x > v[mid]) {
+            low = mid + 1;
+        }
+        else {
+            //一致した
+            return mid;
+        }
+    }
+    return -1;
+}
+
+/*
+binsearchのテスト
+*/
+int main()
+{
+    int arr[] = { 2,3,5,7,11,13,17,19 };
+    int search[] = { 11, 5, 19 ,16, 23 };
+    int j;
+    for (int i = 0; i &lt; sizeof(search) / sizeof(int); i++) {
+        if ((j = binsearch(search[i], arr, sizeof(arr) / sizeof(int))) != -1) {
+            cout &lt;&lt; search[i] &lt;&lt; "は" &lt;&lt; j &lt;&lt; "番目にみつかった" &lt;&lt; endl;
+        }
+        else {
+            cout &lt;&lt; search[i] &lt;&lt; "はみつからなかった"  &lt;&lt; endl;
+        }
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+11は4番目にみつかった
+5は2番目にみつかった
+19は7番目にみつかった
+16はみつからなかった
+23はみつからなかった
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルは<b>2分木</b>のサンプルとなっています。<br />
+　ですので検索元となる配列<b>arr</b>は<b>降順</b>に並んでいるのが条件となっています。<br />
+<h4>ソース紹介</h4>
+　しかし<b>C++</b>で完全に記述する場合、<b>set</b>というコンテナが使えます。このコンテナは<b>2分木</b>を使ったデータの集合体です。また、検索するデータは、C++版の配列と言える<b>vector</b>が使えます。
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;vector>
+#include &lt;set>
+using namespace std;
+
+/*
+setのテスト
+*/
+int main()
+{
+    set&lt;int> arr = { 17,19,2,3,13,5,7,11 };
+    vector&lt;int> search = { 11, 5, 19 ,16, 23 };
+    for (auto v : search) {
+        auto it = arr.find(v);
+        if (it != arr.end()) {
+            auto index = distance(arr.begin(), it);
+            cout &lt;&lt; v &lt;&lt; "が" &lt;&lt; index &lt;&lt; "番目にみつかった" &lt;&lt; endl;
+        }
+        else {
+            cout &lt;&lt; v &lt;&lt; "はみつからなかった" &lt;&lt; endl;
+        }
+    }
+    return 0;
+}
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　出力は<b>binsearch()関数</b>版と同じです。<br />
+　<b>set</b>は<b>データ構造そのもの</b>が<b>2分木</b>になっています。ですから、上記のように<b>arr</b>の初期化（データ設置）は<b>ばらばら</b>でも構いません。初期化の段階で、内部で<b>整列</b>されます。<br />
+　最初から<b>2分木</b>なので、検索スピードもかなり速いです。<br />
+　また<b>searchのループ</b>は<b>拡張for文</b>を使ってます。ですので配列のインデックスも必要ありません。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第3章:制御の流れ</b>に記述されています。<b>Else-If</b>の説明のところです。<br />
+　<b>setやvectorのありがたみ</b>はこうして<b>binsearch()関数</b>を実際に書いてみないとわからないですね。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_15.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_17.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
