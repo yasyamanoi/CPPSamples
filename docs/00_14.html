@@ -15,6 +15,7 @@
 <div id="contents">
 <h1>【第1部】C言語（K＆R移植）編</h1>
 <h1 class="pagetitle">００１４．文字列を連結する</h1>
+<h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
@@ -87,6 +88,7 @@ abcde1234ABCDxyz
 　また、この<b>strcat()関数</b>は連結される文字列<b>char s[]</b>が十分に大きい配列でなくてまなりません。<br />
 　現時点で、<b>MAXLINE</b>の大きさを持ってますが、実際にアプリケーション内などで使用する場合は、最大文字数などのパラメータも必要でしょう。<br />
 　<b>string</b>を使うと以下のようにかなりシンプルに書けます。
+<h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
@@ -110,7 +112,8 @@ int main()
 </pre>
 </div>
 　<b>string</b>を使うと、<b>strcat()関数</b>は、もう必要がなくなります。<br />
-　また<b>C++のgetline()関数</b>は<b>改行を含めない</b>ので、連結も楽です。<b>string</b>に入力できる最大の文字数は
+　また<b>C++のgetline()関数</b>は<b>改行を含めない</b>ので、連結も楽です。<b>string</b>に入力できる最大の文字数は、以下のように調べられます。
+<h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
@@ -126,7 +129,7 @@ int main()
 }
 </pre>
 </div>
-　で知ることができます。ちなみに、僕の環境では
+　ちなみに、僕の環境では
 <div class="box1_title">出力</div>
 <div class="box1">
 <pre>

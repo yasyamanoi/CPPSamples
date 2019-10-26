@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R移植）編</h1>
+<h1 class="pagetitle">００１５．ビット演算</h1>
+　<b>K&R</b>では<b>第2章:データ型・演算子・式</b>に記述されています。<b>ビットごとの論理演算子</b>のところで、<b>getbits()関数</b>という、変数の各ビットの状態を調べる関数が紹介されていますが、ちょっとここでは省略します。<br />
+　代わりとして、よく使用される<b>ビット演算</b>を紹介します。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+#define FLG_A   0x0001
+#define FLG_B   0x0002
+#define FLG_C   0x0004
+#define FLG_D   0x0008
+#define FLG_E   0x0010
+#define FLG_F   0x0020
+#define FLG_G   0x0040
+#define FLG_H   0x0080
+
+int main()
+{
+    unsigned int a = FLG_B | FLG_F;
+    if (a & FLG_B) {
+        cout &lt;&lt; "FLG_Bが有効です" &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "FLG_Bが無効です" &lt;&lt; endl;
+    }
+    a ^= FLG_B;
+    if (a & FLG_B) {
+        cout &lt;&lt; "FLG_Bが有効です" &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "FLG_Bが無効です" &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+FLG_Bが有効です
+FLG_Bが無効です
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　ここでは、<b>ビット演算</b>が<b>フラグ</b>として使用される例を紹介します。<br />
+<div class="box1">
+<pre>
+#define FLG_A   0x0001
+#define FLG_B   0x0002
+#define FLG_C   0x0004
+#define FLG_D   0x0008
+#define FLG_E   0x0010
+#define FLG_F   0x0020
+#define FLG_G   0x0040
+#define FLG_H   0x0080
+</pre>
+</div>
+　は、各ビットごとのフラグです。<br />
+　<b>main()関数</b>では
+<div class="box1">
+<pre>
+    unsigned int a = FLG_B | FLG_F;
+</pre>
+</div>
+　と<b>FLG_B と FLG_F</b>を<b>立てて（有効にして）</b>います。これを検証するには
+<div class="box1">
+<pre>
+a & FLG_B
+</pre>
+</div>
+　のように<b> & </b>演算子で行います。<br />
+　そのフラグをクリアするには
+<div class="box1">
+<pre>
+    a ^= FLG_B;
+</pre>
+</div>
+　のようにします。<br />
+　続いて、<b>ビットシフト</b>のサンプルを紹介します。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+int main()
+{
+    unsigned int n = 567;
+    n &lt;&lt;= 3; //この結果、n == 4536 になる。(567 * 8)
+    cout &lt;&lt; n &lt;&lt; endl;
+    n = 56;
+    n >>= 1; //この結果、n == 28 になる。(56 / 2)
+    cout &lt;&lt; n &lt;&lt; endl;
+    n = 2587;
+    n >>= 3; //この結果、n == 323 になる。(2587 / 8)
+    cout &lt;&lt; n &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+4536
+28
+323
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　<b>左に1つビットシフト</b>すると、<b>2倍にする</b>という意味になります。<br />
+　2つだと<b>4倍</b>です、この例では
+<div class="box1">
+<pre>
+    n &lt;&lt;= 3;
+</pre>
+</div>
+　と、<b>3個ビットシフト</b>してますので<b>8倍</b>です。<br />
+　<b>右にビットシフト</b>はこの逆です。<b>右に1つビットシフト</b>は<b>2分の1</b>、<b>2つで4分の1</b>、<b>3つで8分の1</b>です。整数での計算ですから、<b>余り</b>が出た場合は、切り捨てられます。<br />
+　もう一つ紹介します。今度は<b>K&R</b>のビット操作の関数を<b>C++</b>で書き直したものです。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+xの中の1であるビットを数える
+*/
+int bitcount(unsigned int x) {
+    int b;
+    for (b = 0; x != 0; x >>= 1) {
+        if (x & 01) {
+            b++;
+        }
+    }
+    return b;
+}
+
+/*
+ビットカウントのテスト
+*/
+int main()
+{
+    cout &lt;&lt; "56: " &lt;&lt; bitcount(56) &lt;&lt; endl;
+    cout &lt;&lt; "0X1b: " &lt;&lt; bitcount(0X1b) &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+56: 3
+0X1b: 4
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　<b>bitcount()関数</b>内の
+<div class="box1">
+<pre>
+    for (b = 0; <span class="red">x != 0</span>; x >>= 1) {
+</pre>
+</div>
+　の条件式は重要です。<b>unsigned int</b>の場合、<b>右シフト</b>すると、左端のビットは<b> 0 </b>で埋められます。<br />
+　ですから、<b>右にどんどんシフト</b>していくと、最終的に<b> 0 </b>になります。この特性を利用して、<b>forの条件式</b>を記述しています。
+<h4>K&Rでの記述</h4>
+　元になった<b>bitcount()関数</b>は<b>第2章:データ型・演算子・式</b>に記述されています。<b>代入演算子と式</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_14.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_16.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

@@ -15,6 +15,7 @@
 <div id="contents">
 <h1>【第1部】C言語（K＆R移植）編</h1>
 <h1 class="pagetitle">０００９．文字列の長さを調べる</h1>
+<h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
@@ -65,6 +66,7 @@ size_t strnlen(const char *str,size_t numberOfElements);
 </div>
 　を使うことが奨励されています。つまり<b>永遠に'\0'が来なかったらどうなるか</b>ということです。いずれどこかで破たんして<b>スタックオーバーフロー</b>を起こす可能性があります。<b>スタックオーバーフロー</b>は処理系によっては思わぬセキュリティ的な穴が生じます。ハッキングの温床にもなりかねませんので、もし<b>C言語のstrnlen()</b>を使う場合は、セキュリティ強化バージョンを使用しましょう。<br />
 　さて、この処理を<b>string</b>を使って書くと、以下のようになります。
+<h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
