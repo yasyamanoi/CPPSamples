@@ -83,12 +83,11 @@ using namespace std;
 */
 int main()
 {
-    cin.exceptions(ios::failbit);
     try {
-        int left, right;
+        string left, right;
         cin >> left;
         cin >> right;
-        cout &lt;&lt; left+right &lt;&lt; endl;
+        cout &lt;&lt; stoi(left) + stoi(right) &lt;&lt; endl;
     }
     catch (...) {
         cout &lt;&lt; "数字以外が入力された" &lt;&lt; endl;
@@ -98,7 +97,7 @@ int main()
 }
 </pre>
 </div>
-　この場合<b>cin</b>から直接<b>int型変数</b>に受けることができます。<br />
+　この場合<b>cin</b>から<b>string</b>で受け<b>stoi()関数</b>で変換します。<br />
 　しかし<b>数字以外</b>が入力されたときのために<b>エラー処理</b>が必要です。ここでは<b>例外処理</b>を実装しています。<br />
 　以下に、実行例をいくつか紹介します。
 <div class="box1">
