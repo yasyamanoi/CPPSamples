@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R移植）編</h1>
+<h1 class="pagetitle">００１８．足し算を実装する（符号対応版）</h1>
+<h4>ソース紹介</h4>
+　ここでは<b>００１０．足し算を実装する</b>のサンプルを<b> + - 　符号</b>に対応させたものです。
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+#include &lt;cctype>
+#include &lt;string>
+using namespace std;
+
+/*
+sを整数に変換する（+,-対応版）
+*/
+int atoi(char s[]) {
+    int i, n, sign;
+    for (i = 0; isspace(s[i]); i++) {
+        ;   //空白を飛ばす
+    }
+    sign = (s[i] == '-') ? -1 : 1;
+    if (s[i] == '-' || s[i] == '+') {
+        i++;    //符号を飛ばす
+    }
+    for (n = 0; isdigit(s[i]); i++) {
+        n = 10 * n + (s[i] - '0');
+    }
+    return sign * n;
+}
+
+/*
+足し算の実装
+*/
+int main()
+{
+    string leftstr;
+    string rightstr;
+    getline(cin, leftstr);
+    getline(cin, rightstr);
+    cout &lt;&lt; atoi(leftstr.c_str()) + atoi(rightstr.c_str()) &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+12346
+-568421
+-556075
+</pre>
+</div>
+<div class="box1">
+<pre>
+-58642
++457824
+399182
+</pre>
+</div>
+<div class="box1">
+<pre>
++123456
+-123456
+0
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　出力例を見てもらえればわかるように、今回のバージョンでは<b>atoi()関数</b>が符号に対応しています。<br />
+　しかしながら<b>００１０．足し算を実装する</b>では、すでに<b>cinから直接整数に入れる</b>手法で<b>符号対応</b>もできています。<br />
+　なのでこのサンプルの見どころは<b>atoi()関数</b>内の
+<div class="box1">
+<pre>
+    sign = (s[i] == '-') ? -1 : 1;
+</pre>
+</div>
+　の部分でしょうか。<b>sign</b>に<b>-1もしくは1</b>を入れてます。このことは、リターン時に
+<div class="box1">
+<pre>
+    return sign * n;
+</pre>
+</div>
+　という形で記述されています。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第3章:制御の流れ</b>に記述されています。<b>ループ</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_17.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_19.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
