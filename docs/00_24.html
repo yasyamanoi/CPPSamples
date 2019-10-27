@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００２４．小数点のある足し算を実装する</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cctype>
+#include &lt;cstdio>
+#include &lt;string>
+#include &lt;iomanip>
+using namespace std;
+/*
+文字列 sをdoubleに変換する
+*/
+double atof(char s[]) {
+    double val, power;
+    int i, sign;
+    for (i = 0; isspace(s[i]); i++)
+        ;
+    sign = (s[i] == '-') ? -1 : 1;
+    for (val = 0.0; isdigit(s[i]); i++) {
+        val = 10.0 * val + (s[i] - '0');
+    }
+    if (s[i] == '.') {
+        i++;
+    }
+    for (power = 1.0; isdigit(s[i]); i++) {
+        val = 10.0 * val + (s[i] - '0');
+        power *= 10.0;
+    }
+    return sign * val / power;
+}
+
+/*
+小数点のある足し算を実装
+*/
+int main()
+{
+    string str;
+    double sum = 0.0;
+    cout &lt;&lt; fixed;
+    while (getline(cin, str)) {
+        sum += atof(str.c_str());
+        cout &lt;&lt; setprecision(8) &lt;&lt; sum &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1_filename">abc.txt</div>
+<div class="box1">
+<pre>
+1234
+1234.00000000
+258.325
+1492.32500000
+-8524.02358
+-7031.69858000
+875421.00259
+868389.30401000
+^Z
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルは、数値を打ち込んでいくと、どんどん加算されていきます。<br />
+<div class="box1">
+<pre>
+    cout &lt;&lt; fixed;
+</pre>
+</div>
+　と
+<div class="box1">
+<pre>
+        cout &lt;&lt; setprecision(8) &lt;&lt; sum &lt;&lt; endl;
+</pre>
+</div>
+　の記述により、小数点以下は<b>8桁</b>に固定されています。<br />
+　これを<b>C++</b>オンリーで書いた場合以下のようになります。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+#include &lt;string>
+#include &lt;iomanip>
+using namespace std;
+
+/*
+小数点のある足し算を実装
+*/
+int main()
+{
+    try {
+        string str;
+        double sum = 0.0;
+        cout &lt;&lt; fixed;
+        while (getline(cin, str)) {
+            sum += stod(str);
+            cout &lt;&lt; setprecision(8) &lt;&lt; sum &lt;&lt; endl;
+        }
+    }
+    catch (...) {
+        cout &lt;&lt; "数字以外が入力された" &lt;&lt; endl;
+        return -1;
+    }
+    return 0;
+}
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　<b>string</b>を使って記述する場合、<b>stod()間数</b>が使用できます。これは<b>stringからdoublwにする</b>関数です。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第4章:関数とプログラム構造</b>に記述されています。<b>非整数を返す関数</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_23.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_25.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
