@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００２５．逆ポーランド電卓を実装する</h1>
+　<b>逆ポーランド電卓</b>とは
+<div class="box1">
+<pre>
+(12 + 34) * (56 - 78)
+</pre>
+</div>
+　ならば
+<div class="box1">
+<pre>
+12 34 + 56 78 - *
+</pre>
+</div>
+　と記述する電卓です。<br />
+　<b>K&R</b>では、このサンプルの説明をするのに、複数のソースファイルへの記述が説明されています。<br />
+　ここでは、それに習い、複数ファイルに記述します。<br />
+　なお、以下のソースは、<a href="https://github.com/yasyamanoi/CPPSamples/">レポジトリ</a>の<b>projects/Sample0025_1</b>にあります。（ファイルの中身は<b>K&R</b>の説明とは若干違います）<br />
+　<b>VS2019</b>で開けばビルドできます。
+<h4>ソース紹介</h4>
+　もし0からプロジェクトを作成する場合は<b>C++コンソールアプリケーション－空のプロジェクト</b>を作成して、以下のファイルを追加してビルドしてください。この場合<b>VS2019</b>でなくても<b>VS2015もしくはVS2017でも</b>実装できます。
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1_filename">calc.h</div>
+<div class="box1">
+<pre>
+#pragma once
+
+#include&lt;iostream>
+#include&lt;cstdio>
+#include&lt;cstdlib>
+#include&lt;cmath>
+#include&lt;cctype>
+using namespace std;
+
+#define NUMBER '0'
+void push(double d);
+double pop();
+int getop(char s[]);
+int getch();
+void ungetch(int c);
+</pre>
+</div>
+<div class="box1_filename">stack.cpp</div>
+<div class="box1">
+<pre>
+#include "calc.h"
+
+#define MAXVAL 100
+int sp = 0;
+double val[MAXVAL];
+
+void push(double d) {
+    if (sp &lt; MAXVAL) {
+        val[sp++] = d;
+    }
+    else {
+        cout &lt;&lt; "push: スタックがいっぱいです" &lt;&lt; endl;
+    }
+}
+double pop() {
+    if (sp > 0) {
+        return val[--sp];
+    }
+    else {
+        cout &lt;&lt; "pop: スタックが空です" &lt;&lt; endl;
+        return 0.0;
+    }
+}
+</pre>
+</div>
+<div class="box1_filename">getop.cpp</div>
+<div class="box1">
+<pre>
+#include "calc.h"
+
+int getop(char s[]) {
+    int i, c;
+    while ((s[0] = c = getch()) == ' ' || c == '\t')
+        ;
+    s[1] = '\0';
+    if (!isdigit(c) && c != '.') {
+        return c;
+    }
+    i = 0;
+    if (isdigit(c)) {
+        while (isdigit(s[++i] = c = getch()))
+            ;
+    }
+    if (c == '.') {
+        while (isdigit(s[++i] = c = getch()))
+            ;
+    }
+    s[i] = '\0';
+    if (c != EOF) {
+        ungetch(c);
+    }
+    return NUMBER;
+}
+</pre>
+</div>
+<div class="box1_filename">getch.cpp</div>
+<div class="box1">
+<pre>
+#include "calc.h"
+
+#define BUFSIZE 100
+
+char buf[BUFSIZE];
+int bufp = 0;
+
+int getch() {
+    return (bufp > 0) ? buf[--bufp] : cin.get();
+}
+void ungetch(int c) {
+    if (bufp >= BUFSIZE) {
+        cout &lt;&lt; "ungetch: これ以上追加できません" &lt;&lt; endl;
+    }
+    else {
+        buf[bufp++] = c;
+    }
+}
+</pre>
+</div>
+<div class="box1_filename">main.cpp</div>
+<div class="box1">
+<pre>
+#include "calc.h"
+
+#define MAXOP 100
+
+int main()
+{
+    int type;
+    double op2;
+    char s[MAXOP];
+    while ((type = getop(s)) != EOF) {
+        switch (type) {
+        case NUMBER:
+            push(atof(s));
+            break;
+        case '+':
+            push(pop() + pop());
+            break;
+        case '*':
+            push(pop() * pop());
+            break;
+        case '-':
+            op2 = pop();
+            push(pop() - op2);
+            break;
+        case '/':
+            op2 = pop();
+            if (op2 != 0.0) {
+                push(pop() - op2);
+            }
+            else {
+                cout &lt;&lt; "0除算です" &lt;&lt; endl;
+            }
+            break;
+        case '\n':
+            cout &lt;&lt; '\t' &lt;&lt; pop() &lt;&lt; endl;
+            break;
+        default:
+            cout &lt;&lt; "コマンドが不明です" &lt;&lt; endl;
+            break;
+        }
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1_filename">abc.txt</div>
+<div class="box1">
+<pre>
+12 34 + 56 78 - *
+        -1012
+12.345 67.89 - 987.65 43.21 + *
+        -57259.1
+12 34 - 56 78 + /
+        -156
+^Z
+</pre>
+</div>
+　もし浮動小数点の精度を上げたければ、<b>００２４．小数点のある足し算を実装する</b>で説明した方法で<b>cout</b>の設定を変えてください。
+<h4>サンプル説明</h4>
+　このサンプルは<b>K&R</b>の中でもとくに有名なサンプルです。<b>逆ポーランド</b>というなじみの薄い文法ですが、矛盾なく複雑な計算もできます。<br />
+　僕は、このソースで感心するのは<b>getop()関数の</b>
+<div class="box1">
+<pre>
+    if (c != EOF) {
+        ungetch(c);
+    }
+</pre>
+</div>
+　の部分です。これは<b>入力を読みすぎた時に戻す</b>処理ですが、なかなか思いつくものではないなあ、と思います。（解説になってない）<br />
+　まあ、じっくり読んでください。読めば読むほど<b>味のある</b>ソースです。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第4章:関数とプログラム構造</b>に記述されています。<b>外部変数</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_24.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_26.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
