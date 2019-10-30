@@ -17,5 +17,8 @@ char* alloc(int n) {
 void afree(char* p) {
 	if (p >= allocbuff && p < allocbuff + ALLOCSIZE) {
 		allocp = p;
+		while (p < allocbuff + ALLOCSIZE) {
+			*p++ = '\0';
+		}
 	}
 }
