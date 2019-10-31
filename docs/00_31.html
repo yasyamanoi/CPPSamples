@@ -15,20 +15,87 @@
 <div id="contents">
 <h1>【第1部】C言語（K＆R検証）編</h1>
 <h1 class="pagetitle">００３１．文字列を比較する</h1>
+　今項で紹介するのは、辞書的に<b>同じ</b>か<b>前</b>か<b>後ろ</b>かを比較する<b>strcmp()関数</b>です。<br />
+　<b>strcpy()関数</b>同様、標準ライブラリと被ってしまうので<b>strcmp2()関数</b>としています。
 <h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1">
 <pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+文字列を比較する
+*/
+int strcmp2(const char* s,const char* t) {
+    int i;
+    for (i = 0; s[i] == t[i]; i++) {
+        if (s[i] == '\0') {
+            return 0;
+        }
+    }
+    return s[i] - t[i];
+}
+
+/*
+strcpy2のテスト
+*/
+int main()
+{
+    int i;
+    if((i = strcmp2("abcde", "hello")) > 0) {
+        cout &lt;&lt; "左のほうが後ろ" &lt;&lt; endl;
+    }
+    else if (i &lt; 0) {
+        cout &lt;&lt; "右のほうが後ろ" &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "同じ" &lt;&lt; endl;
+    }
+    if ((i = strcmp2("hello", "hello")) > 0) {
+        cout &lt;&lt; "左のほうが後ろ" &lt;&lt; endl;
+    }
+    else if (i &lt; 0) {
+        cout &lt;&lt; "右のほうが後ろ" &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "同じ" &lt;&lt; endl;
+    }
+
+    return 0;
+}
 </pre>
 </div>
 <div class="box1_title">出力</div>
 <div class="box1">
 <pre>
+右のほうが後ろ
+同じ
 </pre>
 </div>
+　<b>K&R</b>では、<b>ポインタ版</b>も紹介されています。
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+/*
+文字列を比較する(ポインタ版)
+*/
+int strcmp2(const char* s,const char* t) {
+    for (; *s == *t; s++,t++) {
+        if (*s == '\0') {
+            return 0;
+        }
+    }
+    return *s - *t;
+}
+</pre>
+</div>
+　このようにポインタ版のほうがすっきり書けます。
 <h4>サンプル説明</h4>
+　有名な関数<b>strcmp</b>のソースということです。こんなにシンプルだったかのかをと驚かされます。
 <h4>K&Rでの記述</h4>
-　元になったのは<b>第5章:ポインタと配列</b>に記述されています。<b>アドレス計算</b>の説明のところです。
+　元になったのは<b>第5章:ポインタと配列</b>に記述されています。<b>文字ポインタと関数</b>の説明のところです。
 </div>
 <!-- /コンテンツ　-->
 <hr>
