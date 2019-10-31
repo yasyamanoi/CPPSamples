@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第2部】C++編</h1>
+<h1 class="pagetitle">０１０１．Stringを作成する（１）</h1>
+　これよりいよいよ<b>C++</b>の本格的なサンプルを作成します。<br />
+　まずは<b>STL</b>にあるコンテナのミニチュア版を実装します。手始めに<b>string</b>です。こちらのバージョンは先頭の<b>s</b>が大文字になる<b>String</b>です。<b>namespace</b>も<b>cp</b>という中に入れます。<br />
+　1ページのドキュメントで紹介できないので、複数のページに分けます。このページの内容は、<a href="https://github.com/yasyamanoi/CPPSamples/">レポジトリ</a>の<b>projects/Sample0101_1</b>にあります。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1_filename">cpstring.h</div>
+<div class="box1">
+<pre>
+#pragma once
+
+#include&lt;iostream>
+#include &lt;sstream>
+#include &lt;exception>
+
+using namespace std;
+
+namespace cp {
+    //--------------------------------------------------------------------------------------
+    /// 文字列型
+    //--------------------------------------------------------------------------------------
+    class String {
+        char* m_pdata{ nullptr };
+        size_t m_capacity{16};
+        size_t m_size{};
+        size_t m_maxsize{sizeof(size_t)};
+    public:
+        //--------------------------------------------------------------------------------------
+        /*!
+        @brief  コンストラクタ
+        */
+        //--------------------------------------------------------------------------------------
+        String() {}
+        //--------------------------------------------------------------------------------------
+        /*!
+        @brief  コンストラクタ
+        @param[in]  data    初期化する文字列
+        */
+        //--------------------------------------------------------------------------------------
+        String(const char* data) {
+            size_t i = 0;
+            while (data[i] != '\0') {
+                if (i >= (m_maxsize - 1)) {
+                    throw runtime_error("error: memory cannot be secured.");
+                }
+                i++;
+            }
+            m_size = i;
+            while (m_capacity &lt; m_size) {
+                m_capacity *= 2;
+            }
+            m_pdata = new char[m_capacity];
+            strcpy_s(m_pdata, m_capacity - 1, data);
+        }
+        //--------------------------------------------------------------------------------------
+        /*!
+        @brief  デストラクタ
+        */
+        //--------------------------------------------------------------------------------------
+        ~String(){
+            delete[] m_pdata;
+        }
+        //--------------------------------------------------------------------------------------
+        /*!
+        @brief  文字列の先頭のポインタの取得
+        @return 文字列の先頭のポインタ
+        */
+        //--------------------------------------------------------------------------------------
+        const char* data() const {
+            return m_pdata;
+        }
+    };
+    //--------------------------------------------------------------------------------------
+    /*!
+    @brief  Stringをcoutで使えるようにする
+    @param[in]  os  ostreamの参照
+    @param[in]  s   Stringの参照
+    @return ostreamの参照
+    */
+    //--------------------------------------------------------------------------------------
+    ostream& operator &lt;&lt;(ostream& os, const String& s);
+
+}
+//end namespace cp
+</pre>
+</div>
+<div class="box1_filename">cpstring.cpp</div>
+<div class="box1">
+<pre>
+#include "cpstring.h"
+namespace cp {
+
+    ostream& operator &lt;&lt;(ostream& os, const String& s)
+    {
+        os &lt;&lt; s.data();
+        return os;
+    };
+
+}
+//end namespace cp
+</pre>
+</div>
+<div class="box1_filename">main.cpp</div>
+<div class="box1">
+<pre>
+#include "cpstring.h"
+
+using namespace cp;
+
+int main()
+{
+    String s("hello");
+    cout &lt;&lt; s &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+hello
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルでは<b>Stringクラス</b>の一番基本的な実装をしてます。<br />
+　一番の基本は、当たり前の話ですが<b>文字列を設定できる</b>ということです。それをコンストラクタで実装しています。<br />
+　もう一つ、このサンプルで<b>cout</b>にインスタンスを直接渡せるようにしています。<br />
+　<b>cpstring.h/cpp</b>記述の
+<div class="box1">
+<pre>
+    ostream& operator &lt;&lt;(ostream& os, const String& s);
+</pre>
+</div>
+　がその役割をはたします。このことにより、<b>main()関数</b>では
+<div class="box1">
+<pre>
+    String s("hello");
+    cout &lt;&lt; s &lt;&lt; endl;
+</pre>
+</div>
+　と記述できます。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="index.html">目次</a></td>
+<td><a href="01_02.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
