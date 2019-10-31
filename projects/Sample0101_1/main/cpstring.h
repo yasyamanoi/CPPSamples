@@ -69,7 +69,11 @@ namespace cp {
 	@return	ostream‚ÌQÆ
 	*/
 	//--------------------------------------------------------------------------------------
-	ostream& operator <<(ostream& os, const String& s);
+	inline ostream& operator <<(ostream& os, const String& s)
+	{
+		os << s.data();
+		return os;
+	};
 
 }
 //end namespace cp
