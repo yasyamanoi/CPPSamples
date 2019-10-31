@@ -3,9 +3,12 @@
 
 #include "function.h"
 
+#define MAXLINES 5000
 char* lineptr[MAXLINES];
 
-
+/*
+入力行をソートする
+*/
 int main()
 {
 	int nlines;

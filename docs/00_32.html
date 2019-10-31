@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００３２．入力行をソートする</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1_filename">function.h</div>
+<div class="box1">
+<pre>
+#pragma once
+
+#include&lt;iostream>
+#include&lt;cstdio>
+#include&lt;cstdlib>
+#include&lt;cmath>
+#include&lt;cctype>
+using namespace std;
+
+int readlines(char* lineptr[],int maxlines);
+void writelines(char* lineptr[], int nlines);
+void qsort(char* v[], int left, int right);
+</pre>
+</div>
+
+<div class="box1_filename">function.cpp</div>
+<div class="box1">
+<pre>
+#include "function.h"
+
+#define ALLOCSIZE 10000
+static char allocbuff[ALLOCSIZE];
+static char* allocp = allocbuff;
+/*
+メモリを確保する
+*/
+char* alloc(int n) {
+    if (allocbuff + ALLOCSIZE - allocp >= n) {
+        allocp += n;
+        return allocp - n;
+    }
+    else {
+        return nullptr;
+    }
+}
+/*
+文字列をtからsにコピーする（ポインタ版３）
+*/
+void strcpy2(char* s, const char* t) {
+    while (*s++ = *t++)
+        ;
+}
+/*
+sに行を入れ、長さを返す
+*/
+int getline(char *s, int lim) {
+    char c;
+    int i = 0;
+    while (--lim > 0 && (c = cin.get()) != EOF && c != '\n') {
+        s[i++] = c;
+    }
+    if (c == '\n') {
+        s[i++] = c;
+    }
+    s[i] = '\0';
+    return i;
+}
+
+#define MAXLEN 1000
+/*
+入力を読み込む
+*/
+int readlines(char* lineptr[], int maxlines) {
+    int len, nlines;
+    char* p, line[MAXLEN];
+    nlines = 0;
+    while ((len = getline(line, MAXLEN)) > 0) {
+        if (nlines >= maxlines || (p = alloc(len)) == NULL) {
+            return -1;
+        }
+        else {
+            line[len - 1] = '\0';
+            strcpy2(p, line);
+            lineptr[nlines++] = p;
+
+        }
+    }
+    return nlines;
+}
+/*
+出力を書きだす
+*/
+void writelines(char* lineptr[], int nlines) {
+    int i;
+    for (i = 0; i &lt; nlines; i++) {
+        printf("%s\n", lineptr[i]);
+    }
+}
+/*
+文字列を比較する
+*/
+int strcmp2(char* s, char* t) {
+    for (; *s == *t; s++, t++) {
+        if (*s == '\0') {
+            return 0;
+        }
+    }
+    return *s - *t;
+}
+
+/*
+v[i]とv[j]を交換する
+*/
+void swap(char *v[], int i, int j) {
+    char* temp;
+    temp = v[i];
+    v[i] = v[j];
+    v[j] = temp;
+}
+/*
+v[left]...v[right]を昇順にソートする
+*/
+void qsort(char* v[], int left, int right) {
+    if (left >= right) {
+        return;
+    }
+    swap(v, left, (left + right) / 2);
+    int last = left;
+    for (int i = left + 1; i &lt;= right; i++) {
+        if (strcmp2(v[i], v[left]) &lt; 0) {
+            swap(v, ++last, i);
+        }
+    }
+    swap(v, left, last);
+    qsort(v, left, last - 1);
+    qsort(v, left + 1, right);
+}
+</pre>
+</div>
+<div class="box1_filename">main.cpp</div>
+<div class="box1">
+<pre>
+#include "function.h"
+
+#define MAXLINES 5000
+char* lineptr[MAXLINES];
+
+/*
+入力行をソートする
+*/
+int main()
+{
+    int nlines;
+    if ((nlines = readlines(lineptr, MAXLINES)) >= 0) {
+        qsort(lineptr, 0, nlines - 1);
+        writelines(lineptr, nlines);
+        return 0;
+    }
+    else{
+        printf("error\n");
+        return 1;
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+hello
+world
+konnnitiha
+abcdefg
+amenimomakezu
+kazenimomakezu
+inumoarukebabouniataru
+^Z
+abcdefg
+amenimomakezu
+hello
+inumoarukebabouniataru
+kazenimomakezu
+konnnitiha
+world
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルは、行単位で<b>ソート</b>するプログラムです。実装するために<b>ポインタのポインタ</b>を使用しています。<br />
+　<b>ポインタ</b>を理解するのに、大変ためになるサンプルと思います。<br />
+　なおこのサンプルは、、<a href="https://github.com/yasyamanoi/CPPSamples/">レポジトリ</a>の<b>projects/Sample0032_1</b>にあります。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第5章:ポインタと配列</b>に記述されています。<b>ポインタのポインタ</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_31.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_33.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

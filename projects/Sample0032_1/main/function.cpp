@@ -1,12 +1,12 @@
 
 #include "function.h"
 
-
-
 #define ALLOCSIZE 10000
 static char allocbuff[ALLOCSIZE];
 static char* allocp = allocbuff;
-
+/*
+メモリを確保する
+*/
 char* alloc(int n) {
 	if (allocbuff + ALLOCSIZE - allocp >= n) {
 		allocp += n;
@@ -16,8 +16,6 @@ char* alloc(int n) {
 		return nullptr;
 	}
 }
-
-
 /*
 文字列をtからsにコピーする（ポインタ版３）
 */
@@ -25,8 +23,9 @@ void strcpy2(char* s, const char* t) {
 	while (*s++ = *t++)
 		;
 }
-
-//sに行を入れ、長さを返す
+/*
+sに行を入れ、長さを返す
+*/
 int getline(char *s, int lim) {
 	char c;
 	int i = 0;
@@ -41,7 +40,9 @@ int getline(char *s, int lim) {
 }
 
 #define MAXLEN 1000
-
+/*
+入力を読み込む
+*/
 int readlines(char* lineptr[], int maxlines) {
 	int len, nlines;
 	char* p, line[MAXLEN];
@@ -59,13 +60,18 @@ int readlines(char* lineptr[], int maxlines) {
 	}
 	return nlines;
 }
+/*
+出力を書きだす
+*/
 void writelines(char* lineptr[], int nlines) {
 	int i;
 	for (i = 0; i < nlines; i++) {
 		printf("%s\n", lineptr[i]);
 	}
 }
-
+/*
+文字列を比較する
+*/
 int strcmp2(char* s, char* t) {
 	for (; *s == *t; s++, t++) {
 		if (*s == '\0') {
