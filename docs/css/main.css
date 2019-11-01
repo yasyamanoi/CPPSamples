@@ -89,6 +89,25 @@ nav a:hover{
 	color: #FFFF00
 }
 
+label.acclabel {
+	display: block;
+	background-color: #006400;
+	border-radius: 5px;
+	border-left:solid 10px #000000;
+	border-right:solid 10px #000000;
+	padding: 5px 7px;
+	margin-bottom: 20px;
+	box-shadow:4px 4px 10px #999999;
+	font-size: 18pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	letter-spacing:0pt;
+}
+
+input#menu_bar01,input#menu_bar02 {
+    display: none;
+}
+
 ul.mokuji {
 	margin-bottom: 20px;
 	padding: 0;
@@ -105,6 +124,26 @@ ul.mokuji li {
 	list-style-type: none!important;/*ポチ消す*/
 	font-weight: bold;
 }
+
+ul#clang li {
+	display: none;
+}
+
+ul#cpp li {
+	display: none;
+}
+
+
+#menu_bar01:checked ~ ul#clang li {
+	display: block;
+    opacity: 1;
+}
+
+#menu_bar02:checked ~ ul#cpp li {
+	display: block;
+    opacity: 1;
+}
+
 
 #title_words{
 	padding-top: 30px;
