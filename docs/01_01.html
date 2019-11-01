@@ -14,10 +14,11 @@
 <!-- コンテンツ　-->
 <div id="contents">
 <h1>【第2部】C++編</h1>
-<h1 class="pagetitle">０１０１．Stringを作成する（１）</h1>
+<h3>ミニSTL作成に挑戦する</h3>
+<h1 class="pagetitle">０１０１．Stringを作成する</h1>
 　これよりいよいよ<b>C++</b>の本格的なサンプルを作成します。<br />
 　まずは<b>STL</b>にあるコンテナのミニチュア版を実装します。手始めに<b>string</b>です。こちらのバージョンは先頭の<b>s</b>が大文字になる<b>String</b>です。<b>namespace</b>も<b>cp</b>という中に入れます。<br />
-　1ページのドキュメントで紹介できないので、複数のページに分けます。このページの内容は、<a href="https://github.com/yasyamanoi/CPPSamples/">レポジトリ</a>の<b>projects/Sample0101_1</b>にあります。
+　このページの内容は、<a href="https://github.com/yasyamanoi/CPPSamples/">レポジトリ</a>の<b>projects/SampleCpp01</b>にあります。このサンプルは<b>ミニSTL</b>をまとめたものです。
 <h4>ソース紹介</h4>
 <div class="box1_title">CPPファイルに記述</div>
 <div class="box1_filename">cpstring.h</div>
@@ -57,101 +58,135 @@ namespace cp {
             m_capacity = cap;
         }
     public:
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  コンストラクタ
         */
-        //--------------------------------------------------------------------------------------
         String() {}
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  コンストラクタ
         @param[in]  data    初期化する文字列
         */
-        //--------------------------------------------------------------------------------------
         String(const char* data) {
-            size_t i = 0;
-            while (data[i] != '\0') {
-                if (i >= (m_maxsize - 1)) {
-                    throw runtime_error("error: memory cannot be secured.");
-                }
-                i++;
+            m_size = strlen(data);
+            if (m_size >= (m_maxsize - 1)) {
+                throw runtime_error("error: memory cannot be secured.");
             }
-            m_size = i;
-            while (m_capacity &lt; m_size) {
+            while (m_capacity &lt;= (m_size - 1)) {
                 m_capacity *= 2;
             }
             m_pdata = new char[m_capacity];
             strcpy_s(m_pdata, m_capacity - 1, data);
         }
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  デストラクタ
         */
-        //--------------------------------------------------------------------------------------
         ~String(){
             delete[] m_pdata;
         }
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  文字列の長さの取得
         @return 文字列の長さ
         */
-        //--------------------------------------------------------------------------------------
         size_t size() const{
             return m_size;
         }
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  文字列の長さの取得
         @return 文字列の長さ
         */
-        //--------------------------------------------------------------------------------------
         size_t length() const {
             return m_size;
         }
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  文字列の最大の長さの取得
         @return 文字列の最大の長さ
         */
-        //--------------------------------------------------------------------------------------
         size_t max_size() const {
             return m_maxsize;
         }
-        //--------------------------------------------------------------------------------------
         /*!
         @brief  文字列の長さを変更する
+        @param[in]  n   新しい長さ
         @return なし
         */
-        //--------------------------------------------------------------------------------------
         void resize(size_t n){
-            if (n &lt; (m_capacity - 1)) {
-                m_size = n;
-            }
-            else {
+            if (n >= (m_capacity - 1)) {
                 capacity_update(n);
             }
+            m_size = n;
         }
-
-        //--------------------------------------------------------------------------------------
+        /*!
+        @brief  文字列を追加する
+        @param[in]  s 追加する文字列
+        @return なし
+        */
+        String& append(const String& s) {
+            auto total = size() + s.size();
+            if (total >= (m_capacity - 1)) {
+                capacity_update(total);
+            }
+            strcat_s(m_pdata, m_capacity, s.data());
+            m_size = total;
+            return *this;
+        }
+        String& append(const char* s) {
+            auto total = size() + strlen(s);
+            if (total >= (m_capacity - 1)) {
+                capacity_update(total);
+            }
+            strcat_s(m_pdata, m_capacity, s);
+            m_size = total;
+            return *this;
+        }
+        String& append(char s) {
+            char arr[2] = {};
+            arr[0] = s;
+            auto total = size() + 1;
+            if (total >= (m_capacity - 1)) {
+                capacity_update(total);
+            }
+            strcat_s(m_pdata, m_capacity, arr);
+            m_size = total;
+            return *this;
+        }
+        String& operator+=(const String& s) {
+            return append(s);
+        }
+        String& operator+=(const char* s) {
+            return append(s);
+        }
+        String& operator+=(char s) {
+            return append(s);
+        }
+        /*!
+        @brief  文字列をクリアする
+        @return なし
+        */
+        void clear() {
+            m_pdata[0] = '\0';
+            m_size = 0;
+        }
+        /*!
+        @brief  文字列か空かどうかをチェックする
+        @return 空ならtrue
+        */
+        bool empty() const {
+            return (m_size == 0);
+        }
         /*!
         @brief  文字列の先頭のポインタの取得
         @return 文字列の先頭のポインタ
         */
-        //--------------------------------------------------------------------------------------
         const char* data() const {
             return m_pdata;
         }
     };
-    //--------------------------------------------------------------------------------------
     /*!
     @brief  Stringをcoutで使えるようにする
     @param[in]  os  ostreamの参照
     @param[in]  s   Stringの参照
     @return ostreamの参照
     */
-    //--------------------------------------------------------------------------------------
     inline ostream& operator &lt;&lt;(ostream& os, const String& s)
     {
         os &lt;&lt; s.data();
@@ -172,6 +207,10 @@ using namespace cp;
 int main()
 {
     String s("hello");
+    s += " world";
+    s += '!';
+    String s2(" cppあいうえお");
+    s += s2;
     cout &lt;&lt; s &lt;&lt; endl;
     return 0;
 }
@@ -180,11 +219,11 @@ int main()
 <div class="box1_title">出力</div>
 <div class="box1">
 <pre>
-hello
+hello world! cppあいうえお
 </pre>
 </div>
 <h4>サンプル説明</h4>
-　このサンプルでは<b>Stringクラス</b>の一番基本的な実装をしてます。<br />
+　このサンプルでは<b>Stringクラス</b>の実装をしてます。<br />
 　一番の基本は、当たり前の話ですが<b>文字列を設定できる</b>ということです。それをコンストラクタで実装しています。<br />
 　もう一つ、このサンプルで<b>cout</b>にインスタンスを直接渡せるようにしています。<br />
 　<b>cpstring.h</b>記述の
