@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００１４．文字列を連結する</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+tをsの終わりに連結する
+sは十分に大きくなければならない
+*/
+void strcat(char s[], char t[]) {
+    int i{}, j{};
+    while (s[i] != '\0') {
+        i++;
+    }
+    while ((s[i++] = t[j++]) != '\0') {
+        ;
+    }
+}
+
+//sに行を入れ、長さを返す
+//修正版(改行は除く)
+int getline2(char s[], int lim) {
+    char c;
+    int i{};
+    while (--lim > 0 && (c = cin.get()) != EOF && c != '\n') {
+        s[i++] = c;
+    }
+    s[i] = '\0';
+    return i;
+}
+
+#define MAXLINE 1000
+char line[MAXLINE];
+char addline[MAXLINE];
+
+/*
+strcatをテストする
+*/
+int main()
+{
+    int len;
+    while ((len = getline2(line, MAXLINE)) > 0) {
+        //連結
+        strcat(addline, line);
+        cout &lt;&lt; addline &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+abcde
+abcde
+1234
+abcde1234
+ABCD
+abcde1234ABCD
+xyz
+abcde1234ABCDxyz
+^Z
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　<b>getline2</b>が出力するキーボードのエコーの部分もあるので、ちょっとわかりにくいですが、<b>2,4,6,8行目</b>が連結した結果の出力です。<br />
+　abcde、1234、ABCD、xyzが連結されていくさまがわかると思います。<br />
+　また、この<b>strcat()関数</b>は連結される文字列<b>char s[]</b>が十分に大きい配列でなくてまなりません。<br />
+　現時点で、<b>MAXLINE</b>の大きさを持ってますが、実際にアプリケーション内などで使用する場合は、最大文字数などのパラメータも必要でしょう。<br />
+　<b>string</b>を使うと以下のようにかなりシンプルに書けます。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;string>
+using namespace std;
+
+/*
+文字列の連結
+*/
+int main()
+{
+    string str;
+    string allstr;
+    while (getline(cin, str)) {
+        allstr += str;
+        cout &lt;&lt; allstr &lt;&lt; endl;
+    }
+    return 0;
+}
+</pre>
+</div>
+　<b>string</b>を使うと、<b>strcat()関数</b>は、もう必要がなくなります。<br />
+　また<b>C++のgetline()関数</b>は<b>改行を含めない</b>ので、連結も楽です。<b>string</b>に入力できる最大の文字数は、以下のように調べられます。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;string>
+using namespace std;
+
+int main()
+{
+    string str;
+    cout &lt;&lt; "最大文字数: " &lt;&lt; str.max_size() &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+　ちなみに、僕の環境では
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+最大文字数: 9223372036854775807
+</pre>
+</div>
+　とでます。結構膨大な量ですね。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第2章:データ型・演算子・式</b>に記述されています。<b>インクリメントとデクリメント演算子</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_13.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_15.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

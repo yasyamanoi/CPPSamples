@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００２８．文字列の長さを調べる（ポインタ版）</h1>
+　このサンプルは<b>０００９．文字列の長さを調べる</b>を<b>配列版</b>から<b>ポインタ版</b>に書き直したものです。<br />
+　<b>C/C++</b>では<b>配列とポインタ</b>には密接な関係にあり、とくに<b>関数の引数</b>に使う場合、ほぼ同じように記述できます
+
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+sの長さを返す
+*/
+int strlen(char* s) {
+    int n;
+    for (n = 0; *s != '\0'; s++) {
+        n++;
+    }
+    return n;
+}
+
+/*
+文字列の長さを調べる
+*/
+int main()
+{
+    char str1[] = "hello";
+    char str2[] = "abcdefgh";
+
+    cout &lt;&lt; str1 &lt;&lt; "は" &lt;&lt; strlen(str1) &lt;&lt; "文字" &lt;&lt; endl;
+    cout &lt;&lt; str2 &lt;&lt; "は" &lt;&lt; strlen(str2) &lt;&lt; "文字" &lt;&lt; endl;
+
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+helloは5文字
+abcdefghは8文字
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　これは<b>０００９．文字列の長さを調べる</b>と同じ出力になります。<br />
+　さらに言えば、<b>ポインタ</b>は<b>定数ではなく変数</b>ですから、以下のようにも書けます。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+/*
+sの長さを返す
+*/
+int64_t strlen(char* s) {
+    char* p = s;
+    while (*p != '\0') {
+        p++;
+    }
+    return p - s;
+}
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　ここで<b>int64_t</b>は重要です。<b>64ビット環境</b>では<b>アドレッシングモード</b>は<b>64ビット</b>です。ポインタの大きさは<b>アドレッシングモード</b>に依存します。32ビット環境であれば、<b>アドレッシングモード</b>は<b>32ビット</b>なので<b>int</b>で問題ありません。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第5章:ポインタと配列</b>に記述されています。<b>ポインタと配列、および、アドレス計算</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_27.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_29.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

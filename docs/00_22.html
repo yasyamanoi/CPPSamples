@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００２２．後ろ側の空白、タブ、改行を除去する</h1>
+<h4>ソース紹介</h4>
+　ある文字列があり、その意味のある文字から後ろを切り詰める処理はよく使われます。<br />
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+
+/*
+strlen: sの長さを返す
+*/
+int strlen(char s[]) {
+    int i{};
+    while (s[i] != '\0') {
+        ++i;
+    }
+    return i;
+}
+
+/*
+後ろ側の空白、タブ、改行を除去する
+*/
+int trim(char s[]) {
+    int n;
+    for (n = strlen(s) - 1; n >= 0; n--) {
+        if (s[n] != ' ' && s[n] != '\t' && s[n] != '\n') {
+            break;
+        }
+    }
+    s[n + 1] = '\0';
+    return n;
+}
+
+/*
+trimのテスト
+*/
+int main()
+{
+    //後ろに空白などがある文字列
+    char str[] = "hello world      \n   \t";
+    int n = trim(str);
+    cout &lt;&lt; "str[" &lt;&lt; n &lt;&lt; "]の後ろは読み飛ばした。" &lt;&lt; endl;
+    cout &lt;&lt; str &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+str[10]の後ろは読み飛ばした。
+hello world
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルには<b>０００９．文字列の長さを調べる</b>で紹介した<b>strlen()関数</b>が使われています。<br />
+　ループは文字列の後ろからスキャンして<b>空白など以外</b>が出てきたときに<b>break</b>します。その後、、その位置に<b>'\0'</b>を入れて位置を返します。<br />
+　<b>C++</b>で書くときは、<b>string</b>の<b>find_first_not_of()、find_last_not_of()、substr()</b>関数を使用します。（stringにはtrim()関数なないので）自作します。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+#include &lt;string>
+using namespace std;
+/*
+指定された文字セットを前後から除去
+*/
+string trim(string& str,string& check)
+{
+    string ret{""};
+    auto left = str.find_first_not_of(check);
+    if (left == string::npos) {
+        return ret;
+    }
+    auto right = str.find_last_not_of(check);
+    ret = str.substr(left, right - left + 1);
+    return ret;
+}
+
+/*
+trimのテスト
+*/
+int main()
+{
+    //前後に空白などがある文字列
+    string str = "     hello world      \t";
+    cout &lt;&lt; '[' &lt;&lt; str &lt;&lt; ']' &lt;&lt; endl;
+    string chk = " \r\n\t";
+    str = trim(str,chk);
+    cout &lt;&lt; '[' &lt;&lt; str &lt;&lt; ']' &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+[     hello world       ]
+[hello world]
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　この例では<b>前後の空白などを除去</b>しています。
+
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第3章:制御の流れ</b>に記述されています。<b>Break文とContinue文</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_21.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_23.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

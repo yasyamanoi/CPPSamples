@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００２７．数値を配列に入れる</h1>
+<h4>ソース紹介</h4>
+　このサンプルは、例えば、数字が並んでいるであろうファイル（あるいはコンソール入力）から、数値に変換して配列に入れるものです。いろんな応用がきくサンプルと思います。<br/>
+　なおこのサンプルには<b>００２５．逆ポーランド電卓を実装する</b>で紹介した、<b>getch()およびungetch()関数</b>が出てきます。
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include&lt;iostream>
+#include&lt;cstdio>
+#include&lt;cctype>
+using namespace std;
+
+
+#define BUFSIZE 100
+#define MAXOP 100
+#define SIZE 10
+
+char buf[BUFSIZE];
+int bufp = 0;
+
+int getch() {
+    return (bufp > 0) ? buf[--bufp] : cin.get();
+}
+void ungetch(int c) {
+    if (bufp >= BUFSIZE) {
+        cout &lt;&lt; "ungetch: これ以上追加できません" &lt;&lt; endl;
+    }
+    else {
+        buf[bufp++] = c;
+    }
+}
+
+
+int getint(int* pn) {
+    int c, sign;
+    while (isspace(c = getch()))
+        ;
+    if (!isdigit(c) && c != EOF && c != '+' && c != '-') {
+        ungetch(c);
+        return 0;
+    }
+    sign = (c == '-') ? -1 : 1;
+    if (c == '+' || c == '-') {
+        c = getch();
+    }
+    for (*pn = 0; isdigit(c); c = getch()) {
+        *pn = 10 * *pn + (c - '0');
+    }
+    *pn *= sign;
+    if (c != EOF) {
+        ungetch(c);
+    }
+    return c;
+}
+
+int main()
+{
+    int array[SIZE]{};
+    for (int n = 0; n &lt; SIZE && getint(&array[n]) != EOF; n++)
+        ;
+    for (auto v : array) {
+        cout &lt;&lt; v &lt;&lt; endl;
+    }
+
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+123
+456
+789
+852
+147
+963
+^Z
+123
+456
+789
+852
+147
+963
+0
+0
+0
+0
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　ここで入力するのは<b>^Z</b>の手前までです。6つの数字が入力されます。それを<b>int型の配列</b>にいれて、EOFが入った段階で、その配列の中身を出力しています。10個の配列ですが、6つしか設定されないので、7個以降は<b> 0 </b>に表示されます。<br />
+　このサンプルの応用とすれば、例えば数字が並んだ<b>CSVファイル</b>の読み込みに使えます。デリミタとして使うであろう<b> , </b>の扱いを考えなければいけませんがこのサンプルを少しいじっただけで実装できると思います。ぜひトライしてみてください。<br/>
+　あと、これは蛇足なのですが、ポインタの表記に、僕は<b>getint(int* pn)</b>の様に<b>int</b>側に寄せています。<br />
+　しかし<b>K&R</b>では<b>getint(int *pn)</b>と<b>pn</b>側に寄せています。<br />
+　これは好みにもよるのですが、<b>C言語</b>派は<b>getint(int *pn)</b>、<b>C++</b>派は<b>getint(int* pn)</b>とする傾向にあるようです。これは<b>C++</b>を作った<b>ストラウストラップ氏</b>がそうしているからなのですが、たとえば<b>int *p;</b>という宣言は<b>pはint型のポインタ</b>という感じがします。一方<b>int* p;</b>は<b>int型のポインタp</b>という感じがします。僕は後者の方がしっくりくるのでそうしています。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第5章:ポインタと配列</b>に記述されています。<b>ポインタと関数引数</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_26.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_28.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

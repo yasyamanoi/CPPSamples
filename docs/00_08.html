@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">０００８．最も長い入力行を出力する</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+#define MAXLINE 1000
+
+//sに行を入れ、長さを返す
+int getline(char s[], int lim) {
+    char c;
+    int i = 0;
+    while (--lim > 0 && (c = cin.get()) != EOF && c != '\n') {
+        s[i++] = c;
+    }
+    if (c == '\n') {
+        s[i++] = c;
+    }
+    s[i] = '\0';
+    return i;
+}
+
+// from を toにコピー
+void copy(char to[], char from[]) {
+    for (int i = 0; (to[i] = from[i]) != '\0'; ++i) {
+        ;
+    }
+}
+
+/*
+最も長い入力行を出力する
+*/
+int main()
+{
+    int len, max = 0;
+    char line[MAXLINE];
+    char longest[MAXLINE];
+    while ((len = getline(line, MAXLINE)) > 0) {
+        if (len > max) {
+            max = len;
+            copy(longest, line);
+        }
+    }
+    if (max > 0) {
+        cout &lt;&lt; max &lt;&lt; "文字" &lt;&lt; endl;
+        cout &lt;&lt; longest &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "入力がありません" &lt;&lt; endl;
+
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+abcdefghijklmnopqrstuvwxyz
+0123456789
+AAAAAAAAAAAAAAAA
+Hello!Hello!Hello!Hello!Hello!Hello!Hello!
+XXXXXXX
+^Z
+42文字
+Hello!Hello!Hello!Hello!Hello!Hello!Hello!
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルでのキーになる記述は<b>getline()関数</b>です。中をよく見ると<b>cin.get()関数（つまり1文字を入力からとってくる）</b>関数をチェックして<b>最大値を超えるか、EOFが来るか、改行があれば入力終了</b>という記述になってます。つまり<b>行というのは、1文字1文字の集合体である</b>という概念をそのまま記述したものです。<br />
+　<b>K&R</b>では<b>cin.get()関数</b>は<b>getchar()関数</b>で表現されます。<br />
+　<b>getline()関数</b>はC言語では標準関数でも用意されています。ですので、このサンプルは<b>標準関数の実装</b>を簡易的に説明したもの、となっています。<b>K&R</b>ではこのようなサンプルが数多く出てきます。<br />
+　さて、<b>getline()関数</b>を<b>C++のSTL</b>を使って記述した場合、このサンプルは以下のようなものが一般的です。
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;string>
+using namespace std;
+
+int main()
+{
+    string max_str;
+    string str;
+    while (getline(cin, str)) {
+        if (str.size() > max_str.size()) {
+            max_str = str;
+        }
+    }
+    if (max_str.size() > 0) {
+        cout &lt;&lt; max_str.size() &lt;&lt; "文字" &lt;&lt; endl;
+        cout &lt;&lt; max_str &lt;&lt; endl;
+    }
+    else {
+        cout &lt;&lt; "入力がありません" &lt;&lt; endl;
+
+    }
+    return 0;
+}
+</pre>
+</div>
+　このように<b>C++</b>の<b>string</b>を使うと、驚くように簡潔に書けます。もう<b>MAXLINE</b>も<b>copy()関数</b>も必要ではありません。<b>string</b>はもし長い行が出てきたら、内部でバッファのサイズを広げてくれます。<br />
+　しかし。<b>K&R</b>における<b>getline()関数</b>があるからこそ<b>string</b>の偉大さがわかります。ここは重要なところです。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第1章:やさしい入門</b>に記述されています。<b>文字配列</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_07.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_09.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

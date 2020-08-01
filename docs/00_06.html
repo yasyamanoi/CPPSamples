@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">０００６．数字、空白文字、その他をカウント</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+/*
+数字、空白文字、その他をカウント
+*/
+int main()
+{
+    int nwhite{};
+    int nother{};
+    int ndigit[10] {};
+    char c;
+    while ((c = cin.get()) != EOF) {
+        if (c >= '0' && c &lt;= '9') {
+            ++ndigit[c - '0'];
+        }
+        else if (c == ' ' || c == '\n' || c == '\t') {
+            ++nwhite;
+        }
+        else {
+            ++nother;
+        }
+    }
+    for (auto v: ndigit) {
+        cout &lt;&lt; v &lt;&lt; ", ";
+    }
+    cout &lt;&lt; "空白: " &lt;&lt; nwhite &lt;&lt; ", それ以外: " &lt;&lt; nother &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+2018-02-15 12:34:56
+ABCDEFG abcdefg
+1961-03-17 00:00:00
+hello world
+^Z
+9, 6, 3, 2, 1, 2, 2, 1, 1, 1, 空白: 8, それ以外: 32
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　このサンプルは、<b>C++11</b>の新しい機能が結構盛り込まれています。<br />
+　まず<b>初期化</b>ですが、
+<div class="box1">
+<pre>
+    int nwhite{};
+    int nother{};
+    int ndigit[10] {};
+</pre>
+</div>
+　で<b>nwhite、nother</b>そして<b>ndigit配列</b>がすべて<b> 0 </b>に初期化されます。<br />
+　また、<b>拡張for文</b>も使用されています。
+<div class="box1">
+<pre>
+    for (auto v: ndigit) {
+        cout &lt;&lt; v &lt;&lt; ", ";
+    }
+</pre>
+</div>
+　また、<b>C++11</b>とは関係ありませんが
+<div class="box1">
+<pre>
+        if (c >= '0' && c &lt;= '9') {
+            ++ndigit[c - '0'];
+        }
+</pre>
+</div>
+　は<b>ASCIIコード</b>が<b> '0' から '9' まで</b>順番に並んでいるから、記述できる手法です。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第1章:やさしい入門</b>に記述されています。<b>配列</b>の説明のところです。
+
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_05.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_07.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

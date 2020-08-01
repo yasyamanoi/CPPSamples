@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">０００４．入力文字のカウント</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+int main()
+{
+    int nc = 0;
+    while (cin.get() != EOF) {
+        nc++;
+    }
+    cout &lt;&lt; nc &lt;&lt; endl;
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+abcdefg
+1234567
+^Z
+16
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　<b>Ctrl+Z</b>の次の行の<b>16</b>が、入力した文字数です。気を付けたいのはEnterで入力される<b>改行コードもカウントされている</b>ことです。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第1章:やさしい入門</b>に記述されています。<b>文字のカウント</b>の説明のところです。<br />
+　<b>forループ</b>で表現されているサンプルもありますが<b>while</b>のバージョンを移植しました。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_03.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_05.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>

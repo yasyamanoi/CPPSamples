@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<link href="css/main.css" rel="stylesheet" type="text/css">
+<title>C++サンプル集</title>
+</head>
+<body>
+<!-- 全体コンテナ　-->
+<div id="container">
+<header>
+<div id="title_words">C++サンプル集</div>
+</header>
+<!-- コンテンツ　-->
+<div id="contents">
+<h1>【第1部】C言語（K＆R検証）編</h1>
+<h1 class="pagetitle">００１１．小文字に変換する</h1>
+<h4>ソース紹介</h4>
+<div class="box1_title">CPPファイルに記述</div>
+<div class="box1">
+<pre>
+#include &lt;iostream>
+#include &lt;cstdio>
+using namespace std;
+
+
+/*
+cを小文字に変換する
+*/
+char lower(char c) {
+    if (c >= 'A' && c &lt;= 'Z') {
+        return c + 'a' - 'A';
+    }
+    else {
+        return c;
+    }
+}
+
+/*
+小文字に変換する
+*/
+int main()
+{
+    char c;
+    while ((c = cin.get()) != EOF) {
+        cout &lt;&lt; lower(c);
+    }
+    return 0;
+}
+</pre>
+</div>
+<div class="box1_title">出力</div>
+<div class="box1">
+<pre>
+ABCDEFGH
+abcdefgh
+HELLO WORLD
+hello world
+^Z
+</pre>
+</div>
+<h4>サンプル説明</h4>
+　前項では<b>型変換</b>のサンプルを紹介しました。<br />
+　今項では、<b>大文字があったら小文字に変換する</b>サンプルです。
+　<b>lower()関数</b>のような関数の使い道は意外と多く、例えば<b>拡張子</b>のチャックなどで、いったん小文字に変換してからチャックすると効率が良くなります。<br />
+　例えばWindowsは、画像ファイルに<b>.JPG</b>と<b>.jpg</b>の区別はつけません。しかし<b>Linux</b>では区別されます。つまり<b>abc.JPG</b>と<b>abc.jpg</b>は別のファイルになります。このような場合は、拡張子をすべて小文字に変換するなどの処理が必要です。こういう場合に<b>lower()関数</b>は使います。
+<h4>K&Rでの記述</h4>
+　元になったのは<b>第2章:データ型・演算子・式</b>に記述されています。<b>型変換</b>の説明のところです。
+</div>
+<!-- /コンテンツ　-->
+<hr>
+<!-- フッタ　-->
+<footer>
+<table>
+<tr>
+<td><a href="00_10.html">前へ</a></td>
+<td><a href="index.html">目次</a></td>
+<td><a href="00_12.html">次へ</a></td>
+</tr>
+</table>
+</footer>
+<!-- /フッタ　-->
+</div>
+<!-- /全体コンテナ　-->
+</body>
+</html>
